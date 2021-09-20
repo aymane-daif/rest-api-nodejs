@@ -9,17 +9,18 @@ const getAllBlogs = async (req, res, next) => {
   }
 };
 
-const getSingleBlog = async (req, res) => {
+const getSingleBlog = async (req, res, next) => {
   try {
     let { id } = req.params;
     const singleBlog = await blog.findById(id);
+    if (!singleBlog) throw Error('Blog not found');
     res.json(singleBlog);
   } catch (error) {
     next(error);
   }
 };
 
-const createBlog = async (req, res) => {
+const createBlog = async (req, res, next) => {
   try {
     const singleBlog = await blog.create(req.body);
     res.json(singleBlog);
@@ -28,7 +29,7 @@ const createBlog = async (req, res) => {
   }
 };
 
-const deleteBlog = async (req, res) => {
+const deleteBlog = async (req, res, next) => {
   try {
     let { id } = req.params;
     await blog.findByIdAndDelete(id);
@@ -38,7 +39,7 @@ const deleteBlog = async (req, res) => {
   }
 };
 
-const updateBlog = async (req, res) => {
+const updateBlog = async (req, res, next) => {
   try {
     let { id } = req.params;
     const updatedBlog = await blog.findByIdAndUpdate(id, req.body, {
